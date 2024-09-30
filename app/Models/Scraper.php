@@ -18,4 +18,21 @@ class Scraper extends Model
         'status',
     ];
 
+    protected $casts = [
+        'settings' => 'array',
+    ];
+
+    public function start()
+    {
+
+    }
+
+    public function getStatusAttribute()
+    {
+        if (!empty($this->status)) {
+            return $this->status;
+        }
+        return 'Waiting for start';
+    }
+
 }

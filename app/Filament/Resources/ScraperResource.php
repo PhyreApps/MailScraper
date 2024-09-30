@@ -58,7 +58,14 @@ class ScraperResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('start')
+                    ->label('Start')
+                    ->icon('heroicon-o-play')
+                    ->action(function (Scraper $scraper) {
+                        $scraper->start();
+                    }),
+
+//                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

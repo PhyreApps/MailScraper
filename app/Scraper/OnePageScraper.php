@@ -55,22 +55,6 @@ class OnePageScraper
         } catch (\Exception $e) {
             // error
         }
-
-        if (!empty($leads)) {
-            // save leads
-            foreach ($leads as $lead) {
-                $findLead = Lead::where('email', $lead['email'])->where('scraper_id', $this->scraperId)->first();
-                if (!$findLead) {
-                    $newLead = new Lead();
-                    $newLead->scraper_id = $this->scraperId;
-                    $newLead->email = $lead['email'];
-                    $newLead->scraped_from_url = $lead['url'];
-                    $newLead->scraped_from_domain = $lead['domain'];
-                    $newLead->save();
-                }
-            }
-        }
-
         try {
             $scrapDomains = $this->scrapeDomains($dom);
             $domains = array_merge($domains, $scrapDomains);

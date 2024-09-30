@@ -23,4 +23,9 @@ class Lead extends Model
         'scraped_from_url',
         'scraped_from_domain'
     ];
+
+    public function scraper()
+    {
+        return $this->belongsTo(Scraper::class);
+    }
 }

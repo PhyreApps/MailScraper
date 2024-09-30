@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\RunScraper;
 use App\Models\Domain;
+use App\Models\Lead;
 use App\Models\Scraper;
 use App\Scraper\MainPageScraper;
 use App\Scraper\OnePageScraper;
@@ -77,6 +78,22 @@ class RunScrapers extends Command
 
     public function saveResult($scraperId, $result)
     {
+        if (isset($result['leads'])) {
+            // save leads
+            foreach ($result['leads'] as $lead) {
+                $findLead = Lead::where('email', $lead['email'])->where('scraper_id', $scraperId)->first();
+                if (!$findLead) {
+                    $newLead = new Lead();
+                    $newLead->scraper_id = $scraperId;
+                    $newLead->first_name = $lead['name'];
+                    $newLead->email = $lead['email'];
+                    $newLead->scraped_from_url = $lead['url'];
+                    $newLead->scraped_from_domain = $lead['domain'];
+                    $newLead->save();
+                }
+            }
+        }
+
         if (isset($result['domains'])) {
             foreach ($result['domains'] as $domain) {
                 $findDomain = Domain::where('domain', $domain)->where('scraper_id', $scraperId)->first();

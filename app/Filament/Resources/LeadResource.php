@@ -37,6 +37,13 @@ class LeadResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('scraper.name')
+                    ->searchable()
+                    ->sortable(),
+
             ])
             ->filters([
                 //

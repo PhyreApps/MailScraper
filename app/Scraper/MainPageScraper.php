@@ -76,10 +76,19 @@ class MainPageScraper
             // error
         }
 
+        $leads = [];
+        try {
+            $scrapEmails = $this->scrapeEmails($dom);
+            $leads = array_merge($leads, $scrapEmails);
+        } catch (\Exception $e) {
+            // error
+        }
+
         return [
             'paginationLinks' => $paginationLinks,
             'links' => $links,
-            'domains' => $domains
+            'domains' => $domains,
+            'leads'=>$leads
         ];
 
     }

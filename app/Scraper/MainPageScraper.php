@@ -26,8 +26,16 @@ class MainPageScraper
     {
         $findScraper = Scraper::find($this->scraperId);
 
-        $content = file_get_contents("http://localhost:3000/api/article?full-content=yes&url=" . $findScraper->url);
-        $json = json_decode($content, true);
+        try {
+            $content
+                = file_get_contents("http://localhost:3000/api/article?full-content=yes&url="
+                .$findScraper->url);
+            $json = json_decode($content, true);
+        } catch (\Exception $e) {
+            // error
+            return;
+        }
+
         if (!isset($json['fullContent'])) {
             return;
         }

@@ -25,6 +25,10 @@ trait HasEmailScraper
                 if (str_contains($email, '@')) {
                     $name = explode('@', $email)[0];
                 }
+                $checkEmailIsValid = filter_var($email, FILTER_VALIDATE_EMAIL);
+                if (!$checkEmailIsValid) {
+                    continue;
+                }
                 $lead[] = [
                     'name'=> ucwords($name),
                     'email' => $email,

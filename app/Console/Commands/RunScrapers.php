@@ -41,24 +41,34 @@ class RunScrapers extends Command
                 $findScraper->save();
                 return;
             }
+//
+//            $mpScraper = new MainPageScraper($findScraper->id);
+//            $result = $mpScraper->scrape();
+//            $this->saveResult($findScraper->id, $result);
+//
+//            if (isset($result['links'])) {
+//                foreach ($result['links'] as $link) {
+//                    $opScraper = new OnePageScraper($findScraper->id, $link);
+//                    $result = $opScraper->scrape();
+//                    $this->saveResult($findScraper->id, $result);
+//                }
+//            }
+//
+//            if (isset($result['paginationLinks'])) {
+//                foreach ($result['paginationLinks'] as $link) {
+//                   $opScraper = new OnePageScraper($findScraper->id, $link);
+//                   $result = $opScraper->scrape();
+//                   $this->saveResult($findScraper->id, $result);
+//                }
+//            }
 
-            $mpScraper = new MainPageScraper($findScraper->id);
-            $result = $mpScraper->scrape();
-            $this->saveResult($findScraper->id, $result);
-
-            if (isset($result['links'])) {
-                foreach ($result['links'] as $link) {
-                    $opScraper = new OnePageScraper($findScraper->id, $link);
-                    $result = $opScraper->scrape();
+            $findDomains = Domain::where('scraper_id', $findScraper->id)->get();
+            if ($findDomains->count() > 0) {
+                foreach ($findDomains as $domain) {
+                    $mpScraper = new OnePageScraper($findScraper->id,'http://' . $domain->domain);
+                    $result = $mpScraper->scrape();
                     $this->saveResult($findScraper->id, $result);
-                }
-            }
 
-            if (isset($result['paginationLinks'])) {
-                foreach ($result['paginationLinks'] as $link) {
-                   $opScraper = new OnePageScraper($findScraper->id, $link);
-                   $result = $opScraper->scrape();
-                   $this->saveResult($findScraper->id, $result);
                 }
             }
 

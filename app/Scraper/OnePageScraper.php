@@ -29,11 +29,20 @@ class OnePageScraper
         $leads = [];
         $domains = [];
 
-        $content = file_get_contents("http://localhost:3000/api/article?full-content=yes&url=" . $this->url);
-        $json = json_decode($content, true);
+        try {
+            $content
+                = file_get_contents("http://localhost:3000/api/article?full-content=yes&url="
+                .$this->url);
+            $json = json_decode($content, true);
+        } catch (\Exception $e) {
+            // error
+            return;
+        }
+
         if (!isset($json['fullContent'])) {
             return;
         }
+
 
         $fullContent = $json['fullContent'];
 

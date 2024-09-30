@@ -42,12 +42,15 @@ trait HasEmailScraper
                 if (!$checkEmailProviderIsValid) {
                     continue;
                 }
+                $domain = parse_url($this->url, PHP_URL_HOST);
+                $domain = str_replace('www.', '', $domain);
+                $domain = trim($domain);
 
                 $lead[] = [
                     'name'=> ucwords($name),
                     'email' => $email,
                     'url' => $this->url,
-                    'domain' => parse_url($this->url, PHP_URL_HOST)
+                    'domain' => $domain
                 ];
             }
         }

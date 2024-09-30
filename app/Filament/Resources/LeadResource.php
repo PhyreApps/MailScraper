@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\LeadExporter;
 use App\Filament\Resources\LeadResource\Pages;
 use App\Filament\Resources\LeadResource\RelationManagers;
 use App\Models\Lead;
+use Filament\Actions\ExportAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -45,6 +47,10 @@ class LeadResource extends Resource
                     ->sortable(),
 
             ])
+            ->headerActions([
+                Tables\Actions\ExportAction::make()
+                    ->exporter(LeadExporter::class)
+            ])
             ->filters([
                 //
             ])
@@ -52,9 +58,10 @@ class LeadResource extends Resource
 //                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(LeadExporter::class),
+
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

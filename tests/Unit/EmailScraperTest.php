@@ -25,4 +25,15 @@ class EmailScraperTest extends TestCase
         $this->assertEquals('Howdy', $scrapEmails[0]['name']);
         $this->assertEquals('howdy@inovat.com', $scrapEmails[0]['email']);
     }
+
+    public function test_valid_email_domain()
+    {
+      $dom = new \DOMDocument();
+      $dom->loadHTML('<div class="mt-16 lg:mt-10" data-v-0a876191=""><p class="font-bold font-display" data-v-0a876191="">307 West High Street</p><p class="font-bold font-display" data-v-0a876191="">Elizabethtown, PA 17022</p><p class="font-bold font-display" data-v-0a876191=""><a href="mailto:img-burger-bg@2x.jpg " data-v-0a876191="">img-burger-bg@2x.jpg</a></p><p class="font-bold font-display" data-v-0a876191=""><a href="tel:717.367.5446" data-v-0a876191="">717.367.5446</a></p></div>');
+
+        $scrapEmails = $this->scrapeEmails($dom);
+
+        $this->assertEmpty($scrapEmails);
+
+    }
 }

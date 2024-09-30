@@ -37,6 +37,12 @@ trait HasEmailScraper
                 if (!$checkEmailIsValid) {
                     continue;
                 }
+                $emailProvider = explode('@', $email)[1];
+                $checkEmailProviderIsValid = checkdnsrr($emailProvider, 'MX');
+                if (!$checkEmailProviderIsValid) {
+                    continue;
+                }
+
                 $lead[] = [
                     'name'=> ucwords($name),
                     'email' => $email,

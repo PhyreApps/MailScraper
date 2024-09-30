@@ -29,4 +29,14 @@ class Scraper extends Model
         $this->save();
     }
 
+    public function leads()
+    {
+        return $this->hasMany(Lead::class);
+    }
+
+    public function domains()
+    {
+        return $this->hasMany(Domain::class);
+    }
+
 }

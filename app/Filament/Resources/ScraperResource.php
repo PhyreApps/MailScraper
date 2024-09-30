@@ -37,6 +37,7 @@ class ScraperResource extends Resource
                     ->placeholder('https://example.com')
                     ->required()->columnSpanFull(),
 
+
             ]);
     }
 
@@ -50,9 +51,21 @@ class ScraperResource extends Resource
                 Tables\Columns\TextColumn::make('url')
                     ->searchable()
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('leads')
+                    ->state(function (Scraper $scraper) {
+                        return $scraper->leads()->count();
+                    }),
+
+                Tables\Columns\TextColumn::make('domains')
+                    ->state(function (Scraper $scraper) {
+                        return $scraper->domains()->count();
+                    }),
+
                 Tables\Columns\TextColumn::make('status')
                     ->searchable()
                     ->sortable(),
+
             ])
             ->filters([
                 //

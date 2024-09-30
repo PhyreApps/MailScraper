@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\RunScraper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,15 +25,8 @@ class Scraper extends Model
 
     public function start()
     {
-
-    }
-
-    public function getStatusAttribute()
-    {
-        if (!empty($this->status)) {
-            return $this->status;
-        }
-        return 'Waiting for start';
+        $this->status = 'QUEUED';
+        $this->save();
     }
 
 }

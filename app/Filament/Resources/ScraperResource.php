@@ -61,6 +61,9 @@ class ScraperResource extends Resource
                 Tables\Actions\Action::make('start')
                     ->label('Start')
                     ->icon('heroicon-o-play')
+                    ->hidden(function (Scraper $scraper) {
+                        return $scraper->status === 'QUEUED';
+                    })
                     ->action(function (Scraper $scraper) {
                         $scraper->start();
                     }),

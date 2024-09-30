@@ -34,7 +34,9 @@ class LeadResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //
@@ -61,7 +63,7 @@ class LeadResource extends Resource
         return [
             'index' => Pages\ListLeads::route('/'),
             'create' => Pages\CreateLead::route('/create'),
-            'edit' => Pages\EditLead::route('/{record}/edit'),
+          //  'edit' => Pages\EditLead::route('/{record}/edit'),
         ];
     }
 }

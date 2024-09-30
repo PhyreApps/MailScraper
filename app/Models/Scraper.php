@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Scraper extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'url',
+        'selector',
+        'content',
+        'settings',
+        'status',
+    ];
+
 }

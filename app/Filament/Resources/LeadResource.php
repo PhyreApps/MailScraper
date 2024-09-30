@@ -37,7 +37,7 @@ class LeadResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('first_name')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('scraper.name')
@@ -49,7 +49,7 @@ class LeadResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+//                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -69,7 +69,7 @@ class LeadResource extends Resource
     {
         return [
             'index' => Pages\ListLeads::route('/'),
-            'create' => Pages\CreateLead::route('/create'),
+//            'create' => Pages\CreateLead::route('/create'),
           //  'edit' => Pages\EditLead::route('/{record}/edit'),
         ];
     }

@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('scrapers', function (Blueprint $table) {
+        Schema::create('pages', function (Blueprint $table) {
             $table->id();
-
-            $table->string('name')->nullable();
             $table->string('url')->nullable();
-            $table->string('selector')->nullable();
+            $table->string('title')->nullable();
             $table->longText('content')->nullable();
-            $table->longText('settings')->nullable();
             $table->string('status')->nullable();
-
+            $table->bigInteger('scraper_id')->unsigned();
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('scrapers');
+        Schema::dropIfExists('pages');
     }
 };

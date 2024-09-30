@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('country')->nullable();
 
             $table->bigInteger('scraper_id')->unsigned();
+            $table->string('scraped_from_url')->nullable();
+            $table->string('scraped_from_domain')->nullable();
 
             $table->timestamps();
         });

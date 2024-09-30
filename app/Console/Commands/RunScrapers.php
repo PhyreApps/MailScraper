@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Jobs\RunScraper;
+use App\Models\Domain;
 use App\Models\Scraper;
 use App\Scraper\MainPageScraper;
+use App\Scraper\OnePageScraper;
 use Illuminate\Console\Command;
 
 class RunScrapers extends Command
@@ -40,9 +42,33 @@ class RunScrapers extends Command
                 return;
             }
 
-            $mpScraper = new MainPageScraper($findScraper->url);
-            $mpScraper->scrape();
+            $mpScraper = new MainPageScraper($findScraper->id);
+            $result = $mpScraper->scrape();
+            $this->saveResult($findScraper->id, $result);
 
+            if (isset($result['paginationLinks'])) {
+                foreach ($result['paginationLinks'] as $link) {
+                   $opScraper = new OnePageScraper($findScraper->id, $link);
+                   $result = $opScraper->scrape();
+                   $this->saveResult($findScraper->id, $result);
+                }
+            }
+
+        }
+    }
+
+    public function saveResult($scraperId, $result)
+    {
+        if (isset($result['domains'])) {
+            foreach ($result['domains'] as $domain) {
+                $findDomain = Domain::where('domain', $domain)->where('scraper_id', $scraperId)->first();
+                if (!$findDomain) {
+                    $newDomain = new Domain();
+                    $newDomain->scraper_id = $scraperId;
+                    $newDomain->domain = $domain;
+                    $newDomain->save();
+                }
+            }
         }
     }
 }

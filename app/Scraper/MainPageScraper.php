@@ -2,6 +2,7 @@
 
 namespace App\Scraper;
 
+use App\Models\Scraper;
 use App\Scraper\Traits\HasDomainScraper;
 use App\Scraper\Traits\HasEmailScraper;
 use Facebook\WebDriver\Firefox\FirefoxOptions;
@@ -14,19 +15,18 @@ class MainPageScraper
     use HasEmailScraper;
     use HasDomainScraper;
 
-    public $url;
+    public $scraperId;
 
-    public function __construct($url)
+    public function __construct($scraperId)
     {
-        $this->url = $url;
+        $this->scraperId = $scraperId;
     }
 
     public function scrape()
     {
-        $leads = [];
-        $domains = [];
+        $findScraper = Scraper::find($this->scraperId);
 
-        $content = file_get_contents("http://localhost:3000/api/article?full-content=yes&url=" . $this->url);
+        $content = file_get_contents("http://localhost:3000/api/article?full-content=yes&url=" . $findScraper->url);
         $json = json_decode($content, true);
         if (!isset($json['fullContent'])) {
             return;
@@ -36,20 +36,6 @@ class MainPageScraper
 
         $dom = new \DOMDocument();
         @$dom->loadHTML($fullContent);
-
-        try {
-            $scrapEmails = $this->scrapeEmails($dom);
-            $leads = array_merge($leads, $scrapEmails);
-        } catch (\Exception $e) {
-            // error
-        }
-
-        try {
-            $scrapDomains = $this->scrapeDomains($dom);
-            $domains = array_merge($domains, $scrapDomains);
-        } catch (\Exception $e) {
-            // error
-        }
 
         $links = [];
         $getLinks = $dom->getElementsByTagName('a');
@@ -73,6 +59,21 @@ class MainPageScraper
                 }
             }
         }
-        dd($paginationLinks);
+
+        $domains = [];
+        try {
+            $scrapDomains = $this->scrapeDomains($dom);
+            $domains = array_merge($domains, $scrapDomains);
+        } catch (\Exception $e) {
+            // error
+        }
+
+        return [
+            'paginationLinks' => $paginationLinks,
+            'links' => $links,
+            'domains' => $domains
+        ];
+
     }
+
 }

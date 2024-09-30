@@ -28,8 +28,8 @@ trait HasEmailScraper
                 $lead[] = [
                     'name'=> ucwords($name),
                     'email' => $email,
-                //    'source' => 'main_page',
-                 //   'url' => $this->url,
+                    'url' => $this->url,
+                    'domain' => parse_url($this->url, PHP_URL_HOST)
                 ];
             }
         }

@@ -6,11 +6,19 @@ trait HasEmailScraper
 {
     public function scrapeEmails($dom)
     {
-        $content = $dom->textContent;
+
+//        $emails = [];
+//        foreach ($dom->getElementsByTagName('a') as $node) {
+//            $href = $node->getAttribute('href');
+//            if (str_contains($href, 'mailto:')) {
+//                $email = str_replace('mailto:', '', $href);
+//              //  $emails[] = $email;
+//            }
+//        }
 
         $emails = [];
         $emailPattern = '/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/';
-        preg_match_all($emailPattern, $content, $emails);
+        preg_match_all($emailPattern, $dom->saveHtml(), $emails);
 
         if (isset($emails[0])) {
             $emails = $emails[0];

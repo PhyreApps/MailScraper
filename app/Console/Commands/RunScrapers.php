@@ -35,6 +35,9 @@ class RunScrapers extends Command
         if ($findScraper) {
             $this->info('Running scraper: ' . $findScraper->name);
 
+            $findScraper->status = 'RUNNING';
+            $findScraper->save();
+
             $validUrl = filter_var($findScraper->url, FILTER_VALIDATE_URL);
             if (!$validUrl) {
                 $this->error('Invalid URL: ' . $findScraper->url);
@@ -42,26 +45,26 @@ class RunScrapers extends Command
                 $findScraper->save();
                 return;
             }
-//
-//            $mpScraper = new MainPageScraper($findScraper->id);
-//            $result = $mpScraper->scrape();
-//            $this->saveResult($findScraper->id, $result);
-//
-//            if (isset($result['links'])) {
-//                foreach ($result['links'] as $link) {
-//                    $opScraper = new OnePageScraper($findScraper->id, $link);
-//                    $result = $opScraper->scrape();
-//                    $this->saveResult($findScraper->id, $result);
-//                }
-//            }
-//
-//            if (isset($result['paginationLinks'])) {
-//                foreach ($result['paginationLinks'] as $link) {
-//                   $opScraper = new OnePageScraper($findScraper->id, $link);
-//                   $result = $opScraper->scrape();
-//                   $this->saveResult($findScraper->id, $result);
-//                }
-//            }
+
+            $mpScraper = new MainPageScraper($findScraper->id);
+            $result = $mpScraper->scrape();
+            $this->saveResult($findScraper->id, $result);
+
+            if (isset($result['links'])) {
+                foreach ($result['links'] as $link) {
+                    $opScraper = new OnePageScraper($findScraper->id, $link);
+                    $result = $opScraper->scrape();
+                    $this->saveResult($findScraper->id, $result);
+                }
+            }
+
+            if (isset($result['paginationLinks'])) {
+                foreach ($result['paginationLinks'] as $link) {
+                   $opScraper = new OnePageScraper($findScraper->id, $link);
+                   $result = $opScraper->scrape();
+                   $this->saveResult($findScraper->id, $result);
+                }
+            }
 
             $findDomains = Domain::where('scraper_id', $findScraper->id)->get();
             if ($findDomains->count() > 0) {
@@ -69,10 +72,11 @@ class RunScrapers extends Command
                     $mpScraper = new OnePageScraper($findScraper->id,'http://' . $domain->domain);
                     $result = $mpScraper->scrape();
                     $this->saveResult($findScraper->id, $result);
-
                 }
             }
 
+            $findScraper->status = 'COMPLETED';
+            $findScraper->save();
         }
     }
 

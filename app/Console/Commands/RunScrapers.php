@@ -82,6 +82,7 @@ class RunScrapers extends Command
 
     public function saveResult($scraperId, $result)
     {
+        $findScraper = Scraper::find($scraperId);
         if (isset($result['leads'])) {
             // save leads
             foreach ($result['leads'] as $lead) {
@@ -93,6 +94,7 @@ class RunScrapers extends Command
                     $newLead->email = $lead['email'];
                     $newLead->scraped_from_url = $lead['url'];
                     $newLead->scraped_from_domain = $lead['domain'];
+                    $newLead->user_id = $findScraper->user_id;
                     $newLead->save();
                 }
             }
@@ -105,6 +107,7 @@ class RunScrapers extends Command
                     $newDomain = new Domain();
                     $newDomain->scraper_id = $scraperId;
                     $newDomain->domain = $domain;
+                    $newDomain->user_id = $findScraper->user_id;
                     $newDomain->save();
                 }
             }

@@ -27,6 +27,7 @@ class RunScrapers extends Command
     protected $description = 'Command description';
 
     /**
+     *
      * Execute the console command.
      */
     public function handle()

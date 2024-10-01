@@ -36,4 +36,21 @@ class EmailScraperTest extends TestCase
         $this->assertEmpty($scrapEmails);
 
     }
+
+    public function test_email_domain()
+    {
+      $dom = new \DOMDocument();
+      $dom->loadHTML('\t\t\t\t\t\t\t<li><a href="mailto:contact@codrops.com">Get in touch</a></li>\n
+');
+
+        $scrapEmails = $this->scrapeEmails($dom);
+
+        $this->assertIsArray($scrapEmails);
+        $this->assertCount(1, $scrapEmails);
+
+
+        $this->assertEquals('Contact', $scrapEmails[0]['name']);
+        $this->assertEquals('contact@codrops.com', $scrapEmails[0]['email']);
+
+    }
 }

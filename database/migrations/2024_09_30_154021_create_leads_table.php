@@ -24,9 +24,11 @@ return new class extends Migration
             $table->string('zip')->nullable();
             $table->string('country')->nullable();
 
-            $table->bigInteger('scraper_id')->unsigned();
+            $table->bigInteger('scraper_id');
             $table->string('scraped_from_url')->nullable();
             $table->string('scraped_from_domain')->nullable();
+
+            $table->bigInteger('user_id');
 
             $table->timestamps();
         });

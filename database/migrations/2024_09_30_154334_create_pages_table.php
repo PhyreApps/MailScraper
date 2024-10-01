@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->longText('content')->nullable();
             $table->string('status')->nullable();
-            $table->bigInteger('scraper_id')->unsigned();
+            $table->bigInteger('scraper_id');
+            $table->bigInteger('user_id');
             $table->timestamps();
         });
     }

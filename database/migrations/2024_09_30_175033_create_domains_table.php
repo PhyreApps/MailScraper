@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->string('domain');
             $table->string('scraper_id');
+            $table->bigInteger('user_id');
 
             $table->timestamps();
         });

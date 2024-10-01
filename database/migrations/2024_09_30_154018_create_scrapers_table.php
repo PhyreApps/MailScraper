@@ -21,6 +21,8 @@ return new class extends Migration
             $table->longText('settings')->nullable();
             $table->string('status')->nullable();
 
+            $table->bigInteger('user_id');
+
             $table->timestamps();
         });
     }

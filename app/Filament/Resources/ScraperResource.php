@@ -18,7 +18,7 @@ class ScraperResource extends Resource
 {
     protected static ?string $model = Scraper::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-bug-ant';
+    protected static ?string $navigationIcon = 'myicons-parsecat';
 
     protected static ?int $navigationSort = 0;
 

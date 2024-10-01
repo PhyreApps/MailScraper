@@ -22,6 +22,10 @@ class ScraperResource extends Resource
 
     protected static ?int $navigationSort = 0;
 
+    protected static ?string $label = 'ParseCat';
+
+    protected static ?string $pluralLabel = 'ParseCats';
+
     public static function form(Form $form): Form
     {
         return $form

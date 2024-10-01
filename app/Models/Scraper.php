@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Jobs\RunScraper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 class Scraper extends Model
 {
@@ -22,6 +23,24 @@ class Scraper extends Model
     protected $casts = [
         'settings' => 'array',
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('user', function (Builder $query) {
+            if (auth()->hasUser()) {
+                $query->where('user_id', auth()->user()->getAuthIdentifier());
+            }
+        });
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->user_id = auth()->user()->getAuthIdentifier();
+        });
+    }
 
     public function start()
     {

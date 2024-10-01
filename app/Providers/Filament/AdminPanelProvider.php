@@ -33,11 +33,11 @@ class AdminPanelProvider extends PanelProvider
             ->darkMode(true)
             ->sidebarWidth('14rem')
             ->colors([
-                'primary' => Color::Red,
+                'primary' => Color::hex('#B60C0C'),
             ])
             ->registration()
             ->databaseNotifications()
-//            ->topNavigation()
+            ->topNavigation()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

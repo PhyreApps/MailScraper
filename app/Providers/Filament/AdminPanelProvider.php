@@ -27,11 +27,16 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandLogo(asset('images/parsecat.svg'))
+            ->darkModeBrandLogo(asset('images/parsecat-dark.svg'))
+            ->brandLogoHeight('36px')
+            ->darkMode(true)
+            ->sidebarWidth('14rem')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Red,
             ])
             ->databaseNotifications()
-            ->topNavigation()
+//            ->topNavigation()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

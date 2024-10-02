@@ -28,8 +28,10 @@ class MainPageScraper
     {
         $findScraper = Scraper::find($this->scraperId);
 
+        $url = "http://parsecat.com:3000/api/article?full-content=yes&url=" .$findScraper->url;
+
         try {
-            $content  = file_get_contents("http://localhost:3000/api/article?full-content=yes&url=" .$findScraper->url);
+            $content  = file_get_contents($url);
             $json = json_decode($content, true);
         } catch (\Exception $e) {
             // error

@@ -27,9 +27,7 @@ class MainPageScraper
         $findScraper = Scraper::find($this->scraperId);
 
         try {
-            $content
-                = file_get_contents("http://localhost:3000/api/article?full-content=yes&url="
-                .$findScraper->url);
+            $content  = file_get_contents("http://localhost:3000/api/article?full-content=yes&url=" .$findScraper->url);
             $json = json_decode($content, true);
         } catch (\Exception $e) {
             // error
@@ -45,6 +43,8 @@ class MainPageScraper
         $dom = new \DOMDocument();
         @$dom->loadHTML($fullContent);
 
+        $mainDomain = parse_url($findScraper->url, PHP_URL_HOST);
+
         $links = [];
         $getLinks = $dom->getElementsByTagName('a');
         if ($getLinks->length > 0) {
@@ -52,6 +52,15 @@ class MainPageScraper
                 $href = $link->getAttribute('href');
                 if (filter_var($href, FILTER_VALIDATE_URL)) {
                     $links[] = $href;
+                } else {
+                    if (!str_contains($href, 'http://')) {
+                        $href = 'http://' . $mainDomain . $href;
+                    } elseif (!str_contains($href, 'https://')) {
+                        $href = 'http://' . $mainDomain . $href;
+                    }
+                    if (filter_var($href, FILTER_VALIDATE_URL)) {
+                        $links[] = $href;
+                    }
                 }
             }
         }

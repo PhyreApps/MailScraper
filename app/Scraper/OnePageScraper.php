@@ -33,7 +33,7 @@ class OnePageScraper
 
         $url = "http://parsecat.com:3000/api/article?full-content=yes&url=" .$this->url;
 
-//        echo 'Scraping: ' . $url . PHP_EOL;
+        echo 'Scraping: ' . $url . PHP_EOL;
 
         try {
             $content  = file_get_contents($url);

@@ -32,6 +32,8 @@ trait HasLinksScraper
             }
         }
 
+        $links = array_unique($links);
+
         return $links;
     }
 }

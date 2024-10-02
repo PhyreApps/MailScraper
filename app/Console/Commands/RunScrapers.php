@@ -49,13 +49,25 @@ class RunScrapers extends Command
 
             $mpScraper = new MainPageScraper($findScraper->id);
             $result = $mpScraper->scrape();
+
             $this->saveResult($findScraper->id, $result);
 
             if (isset($result['links'])) {
                 foreach ($result['links'] as $link) {
+
                     $opScraper = new OnePageScraper($findScraper->id, $link);
                     $result = $opScraper->scrape();
                     $this->saveResult($findScraper->id, $result);
+
+                    // Level 3 of scraping
+                    if (isset($result['links'])) {
+                        foreach ($result['links'] as $link) {
+                            $opScraper = new OnePageScraper($findScraper->id, $link);
+                            $result = $opScraper->scrape();
+                            $this->saveResult($findScraper->id, $result);
+                        }
+                    }
+
                 }
             }
 

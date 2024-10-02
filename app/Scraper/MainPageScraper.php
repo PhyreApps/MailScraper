@@ -11,6 +11,8 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use GuzzleHttp\Client;
 
+require_once 'simple_html_dom.php';
+
 class MainPageScraper
 {
     use HasEmailScraper;
@@ -29,6 +31,7 @@ class MainPageScraper
         $findScraper = Scraper::find($this->scraperId);
 
         $url = "http://parsecat.com:3000/api/article?full-content=yes&url=" .$findScraper->url;
+//        echo 'Scraping: ' . $url . PHP_EOL;
 
         try {
             $content  = file_get_contents($url);
@@ -44,8 +47,7 @@ class MainPageScraper
 
         $fullContent = $json['fullContent'];
 
-        $dom = new \DOMDocument();
-        @$dom->loadHTML($fullContent);
+        $dom = str_get_html($fullContent);
 
         $links = [];
         try {

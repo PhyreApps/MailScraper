@@ -31,8 +31,12 @@ class OnePageScraper
         $leads = [];
         $domains = [];
 
+        $url = "http://parsecat.com:3000/api/article?full-content=yes&url=" .$this->url;
+
+//        echo 'Scraping: ' . $url . PHP_EOL;
+
         try {
-            $content  = file_get_contents("http://localhost:3000/api/article?full-content=yes&url=" .$this->url);
+            $content  = file_get_contents($url);
             $json = json_decode($content, true);
         } catch (\Exception $e) {
             // error
@@ -46,8 +50,7 @@ class OnePageScraper
 
         $fullContent = $json['fullContent'];
 
-        $dom = new \DOMDocument();
-        @$dom->loadHTML($fullContent);
+        $dom = str_get_html($fullContent);
 
         try {
             $scrapEmails = $this->scrapeEmails($dom);

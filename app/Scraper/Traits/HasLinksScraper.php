@@ -2,17 +2,19 @@
 
 namespace App\Scraper\Traits;
 
+use voku\helper\HtmlDomParser;
+
 trait HasLinksScraper
 {
     public function scrapeLinks($dom, $fromUrl)
     {
-
         $mainDomain = parse_url($fromUrl, PHP_URL_HOST);
         $mainDomain = 'http://' . $mainDomain;
 
         $links = [];
-        $getLinks = $dom->getElementsByTagName('a');
-        if ($getLinks->length > 0) {
+        $getLinks = $dom->find('a');
+
+        if (!empty($getLinks)) {
             foreach ($getLinks as $link) {
                 $href = $link->getAttribute('href');
                 if (filter_var($href, FILTER_VALIDATE_URL)) {

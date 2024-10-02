@@ -8,7 +8,7 @@ trait HasEmailScraper
     {
 
         $emails = [];
-        foreach ($dom->getElementsByTagName('a') as $node) {
+        foreach ($dom->find('a') as $node) {
             $href = $node->getAttribute('href');
             if (str_contains($href, 'mailto:')) {
                 $email = str_replace('mailto:', '', $href);
@@ -17,7 +17,7 @@ trait HasEmailScraper
         }
 
         $emailPattern = '/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/';
-        preg_match_all($emailPattern, $dom->saveHtml(), $emailsMatch);
+        preg_match_all($emailPattern, $dom->root->innertext(), $emailsMatch);
 
         if (isset($emailsMatch[0])) {
             $emails = array_merge($emails, $emailsMatch[0]);

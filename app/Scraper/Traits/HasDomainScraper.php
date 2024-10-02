@@ -7,8 +7,8 @@ trait HasDomainScraper
     public function scrapeDomains($dom)
     {
         $links = [];
-        $getLinks = $dom->getElementsByTagName('a');
-        if ($getLinks->length > 0) {
+        $getLinks = $dom->find('a');
+        if (!empty($getLinks)) {
             foreach ($getLinks as $link) {
                 $href = $link->getAttribute('href');
                 if (filter_var($href, FILTER_VALIDATE_URL)) {

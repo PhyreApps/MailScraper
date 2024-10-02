@@ -5,6 +5,7 @@ namespace App\Scraper;
 use App\Models\Lead;
 use App\Scraper\Traits\HasDomainScraper;
 use App\Scraper\Traits\HasEmailScraper;
+use App\Scraper\Traits\HasLinksScraper;
 use Facebook\WebDriver\Firefox\FirefoxOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -12,6 +13,7 @@ use GuzzleHttp\Client;
 
 class OnePageScraper
 {
+    use HasLinksScraper;
     use HasEmailScraper;
     use HasDomainScraper;
 
@@ -30,9 +32,7 @@ class OnePageScraper
         $domains = [];
 
         try {
-            $content
-                = file_get_contents("http://localhost:3000/api/article?full-content=yes&url="
-                .$this->url);
+            $content  = file_get_contents("http://localhost:3000/api/article?full-content=yes&url=" .$this->url);
             $json = json_decode($content, true);
         } catch (\Exception $e) {
             // error
@@ -62,9 +62,18 @@ class OnePageScraper
             // error
         }
 
+        $links = [];
+        try {
+            $scrapLinks = $this->scrapeLinks($dom, $this->url);
+            $links = array_merge($links, $scrapLinks);
+        } catch (\Exception $e) {
+            // error
+        }
+
         return [
             'leads' => $leads,
             'domains' => $domains,
+            'links' => $links,
         ];
     }
 }

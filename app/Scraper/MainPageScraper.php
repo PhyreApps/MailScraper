@@ -5,6 +5,7 @@ namespace App\Scraper;
 use App\Models\Scraper;
 use App\Scraper\Traits\HasDomainScraper;
 use App\Scraper\Traits\HasEmailScraper;
+use App\Scraper\Traits\HasLinksScraper;
 use Facebook\WebDriver\Firefox\FirefoxOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -14,6 +15,7 @@ class MainPageScraper
 {
     use HasEmailScraper;
     use HasDomainScraper;
+    use HasLinksScraper;
 
     public $scraperId;
 
@@ -43,26 +45,12 @@ class MainPageScraper
         $dom = new \DOMDocument();
         @$dom->loadHTML($fullContent);
 
-        $mainDomain = parse_url($findScraper->url, PHP_URL_HOST);
-
         $links = [];
-        $getLinks = $dom->getElementsByTagName('a');
-        if ($getLinks->length > 0) {
-            foreach ($getLinks as $link) {
-                $href = $link->getAttribute('href');
-                if (filter_var($href, FILTER_VALIDATE_URL)) {
-                    $links[] = $href;
-                } else {
-                    if (!str_contains($href, 'http://')) {
-                        $href = 'http://' . $mainDomain . $href;
-                    } elseif (!str_contains($href, 'https://')) {
-                        $href = 'http://' . $mainDomain . $href;
-                    }
-                    if (filter_var($href, FILTER_VALIDATE_URL)) {
-                        $links[] = $href;
-                    }
-                }
-            }
+        try {
+            $scrapLinks = $this->scrapeLinks($dom, $findScraper->url);
+            $links = array_merge($links, $scrapLinks);
+        } catch (\Exception $e) {
+            // error
         }
 
         // Try to detect pagination links

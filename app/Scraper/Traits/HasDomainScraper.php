@@ -6,6 +6,13 @@ trait HasDomainScraper
 {
     public function scrapeDomains($dom)
     {
+        if (empty($dom)) {
+            return [];
+        }
+        if (!method_exists($dom, 'find')) {
+            return [];
+        }
+
         $links = [];
         $getLinks = $dom->find('a');
         if (!empty($getLinks)) {

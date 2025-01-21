@@ -8,6 +8,13 @@ trait HasLinksScraper
 {
     public function scrapeLinks($dom, $fromUrl)
     {
+        if (empty($dom)) {
+            return [];
+        }
+        if (!method_exists($dom, 'find')) {
+            return [];
+        }
+
         $mainDomain = parse_url($fromUrl, PHP_URL_HOST);
         $mainDomain = 'http://' . $mainDomain;
 

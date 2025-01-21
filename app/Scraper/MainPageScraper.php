@@ -30,7 +30,7 @@ class MainPageScraper
     {
         $findScraper = Scraper::find($this->scraperId);
 
-        $url = "http://parsecat.com:3000/api/article?full-content=yes&url=" .$findScraper->url;
+        $url = "http://parsecat.microweberapi.com:3000/api/article?full-content=yes&url=" .$findScraper->url;
         echo 'Scraping: ' . $url . PHP_EOL;
 
         try {

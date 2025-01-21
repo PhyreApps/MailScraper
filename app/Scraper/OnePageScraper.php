@@ -31,7 +31,7 @@ class OnePageScraper
         $leads = [];
         $domains = [];
 
-        $url = "http://parsecat.com:3000/api/article?full-content=yes&url=" .$this->url;
+        $url = "http://parsecat.microweberapi.com:3000/api/article?full-content=yes&url=" .$this->url;
 
         echo 'Scraping: ' . $url . PHP_EOL;
 

@@ -7,6 +7,13 @@ trait HasEmailScraper
     public function scrapeEmails($dom)
     {
 
+        if (empty($dom)) {
+            return [];
+        }
+        if (!method_exists($dom, 'find')) {
+            return [];
+        }
+
         $emails = [];
         foreach ($dom->find('a') as $node) {
             $href = $node->getAttribute('href');
